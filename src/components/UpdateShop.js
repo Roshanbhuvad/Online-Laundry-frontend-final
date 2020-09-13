@@ -27,7 +27,7 @@ class UpdateShop extends Component {
 
     Pickup(user).then(res => {
       if (res) {
-        this.props.history.push(`/shops/profile`)
+        this.props.history.push(`https://laundrybackend.herokuapp.com/shops/profile`)
       }
     })
   }

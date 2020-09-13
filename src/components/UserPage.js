@@ -15,13 +15,13 @@ class UserPage extends Component {
 	componentDidMount() {
 	const jwt = getJwt();
 	if(!jwt) {
-		this.props.history.push("/signin")
+		this.props.history.push("https://laundrybackend.herokuapp.com/signin")
 	}
-	axios.get("/user/nearby", {headers: {Authorization:"Bearer ${jwt}" }}).then(res => this.setState({
+	axios.get("https://laundrybackend.herokuapp.com/user/nearbyshops?lat=17.4448&lng=78.3498", {headers: {authorization:"Bearer ${jwt}" }}).then(res => this.setState({
 		user: res.data
 	})).catch(err => {
 		localStorage.removeItem("cool-jwt");
-		this.props.history.push("/signin")
+		this.props.history.push("https://laundrybackend.herokuapp.com/signin")
 	});
 	}
 

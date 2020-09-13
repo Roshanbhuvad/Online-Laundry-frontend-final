@@ -2,7 +2,7 @@ import axios from 'axios'
 
 export const Shopregister = newUser => {
   return axios
-    .post('/shops/registershop', {
+    .post('https://laundrybackend.herokuapp.com/shops/registershop', {
       name: newUser.name,
       email: newUser.email,
       phoneNumber: newUser.phoneNumber,
@@ -11,7 +11,8 @@ export const Shopregister = newUser => {
       ClosingTime: newUser.ClosingTime,
       price: newUser.price,
       image: newUser.image,
-      geometry: newUser.geometry,
+      Latitude: newUser.Latitude,
+      Longitude: newUser.Longitude,
       role: newUser.role,
       address: newUser.address,
     })
@@ -23,7 +24,7 @@ export const Shopregister = newUser => {
 
 export const Shoplogin = user => {
   return axios
-    .post('/signin', {
+    .post('https://laundrybackend.herokuapp.com/signin', {
       phoneNumber: user.phoneNumber,
       password: user.password
     })
@@ -38,7 +39,7 @@ export const Shoplogin = user => {
 
 export const getProfile = user => {
   return axios
-    .get('/shops/:id', {
+    .get('https://laundrybackend.herokuapp.com/shops/:id', {
       //headers: { Authorization: ` ${this.getToken()}` }
     })
     .then(response => {

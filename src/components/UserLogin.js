@@ -23,30 +23,14 @@ class UserLogin extends React.Component {
   }
   submit(e) {
     e.preventDefault()
-    axios.post("user/nearby", {
+    axios.post("https://laundrybackend.herokuapp.com/user/logincustomer", {
       phoneNumber: this.state.phoneNumber,
       password: this.state.password
     }).then(res => {
       localStorage.setItem("cool-jwt",res.data);
-      this.props.history.push("/nearby");
+      this.props.history.push("https://laundrybackend.herokuapp.com/nearby");
     });
-}
-    /*login(user).then(res => {
-      if (res) {
-        this.props.history.push(`/nearby`)
-      }
-    })
   }
-  /*handleChange = event => {
-    this.setState({
-      [event.target.name]: event.target.value
-    });
-  };
-
-  handleSubmit = event => {
-    console.log("Submitting");
-    console.log(this.state);
-  }; */
 
   render() {
     return (

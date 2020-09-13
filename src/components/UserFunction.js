@@ -2,7 +2,7 @@ import axios from 'axios'
 
 export const register = newUser => {
   return axios
-    .post('/user/registercustomer', {
+    .post('https://laundrybackend.herokuapp.com/user/registercustomer', {
       username: newUser.username,
       email: newUser.email,
       phoneNumber: newUser.phoneNumber,
@@ -17,7 +17,7 @@ export const register = newUser => {
 
 export const login = user => {
   return axios
-    .post('/signin', {
+    .post('https://laundrybackend.herokuapp.com/signin', {
       phoneNumber: user.phoneNumber,
       password: user.password
     })
@@ -32,7 +32,7 @@ export const login = user => {
 
 export const getProfile = user => {
   return axios
-    .get('/nearby', {
+    .get('https://laundrybackend.herokuapp.com/nearby', {
       headers: { Authorization: ` ${this.getToken()}` }
     })
     .then(response => {

@@ -65,7 +65,7 @@ handleSubmit = (e) => {
     }
 
     register(newUser).then(res => {
-      this.props.history.push(`/signin`)
+      this.props.history.push(`https://laundrybackend.herokuapp.com/signin`)
     })
   };
    handleChange = e => {
@@ -193,7 +193,7 @@ handleSubmit = (e) => {
                      <div className="form-group">
                 <label htmlFor="geometry" className="font-weight-bold text-danger">Location</label>
                 <input
-                  type="text"
+                  type="number"
                   className="form-control"
                   name="geometry"
                   placeholder="Enter your Location"

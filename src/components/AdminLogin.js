@@ -27,7 +27,7 @@ class Login extends Component {
 
     login(user).then(res => {
       if (res) {
-        this.props.history.push(`http://localhost:8000/admin/allstores`)
+        this.props.history.push(`https://laundrybackend.herokuapp.com/admin/allstores`)
       }
     })
   }

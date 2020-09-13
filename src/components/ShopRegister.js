@@ -1,23 +1,11 @@
 import React, { Component } from 'react'
 import { Shopregister } from './ShopFunction'
-import validate from 'react-joi-validation';
-//import Joi from "joi-browser";
+import axios from "axios";
 
  const emailRegex = RegExp(
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
 );
 
-/*var schema = Joi.object().keys({
-  name: Joi.string().required(),
-  email: Joi.string().required(),
-  phoneNumber: Joi.number().required(),
-  password: Joi.string().min(8).required(),
-  OpeningTime: Joi.string().required(),
-  ClosingTime: Joi.string().required(),
-  price: Joi.string().required(),
-  role: Joi.string().required(),
-  address: Joi.string().required(),
-}); */
 
 const formValid = ({ formErrors, ...rest }) => {
   let valid = true;
@@ -43,12 +31,12 @@ class ShopRegister extends Component {
       name: null,
       email: null,
       phoneNumber: null,
-      password: null,
+      password: "",
       OpeningTime: null,
       ClosingTime: null,
-      image: null,
-      Latitude: '',
-      Longitude: '',
+      image:null,
+      lat: "",
+      lng: "",
       role: null,
       address: null,
       formErrors: {
@@ -61,15 +49,12 @@ class ShopRegister extends Component {
       }
       
     };
-  } 
-
-    /*this.onChange = this.onChange.bind(this)
-    this.onSubmit = this.onSubmit.bind(this)
-  } */
-
-  /*onChange(e) {
-    this.setState({ [e.target.name]: e.target.value }) */
-
+  
+  this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+     this.onClickHandler = this.onClickHandler.bind(this);
+    this.onChangHandler = this.onChangHandler.bind(this);
+}
   handleSubmit = (e) => {
     e.preventDefault()
         if (formValid(this.state)) {
@@ -96,14 +81,14 @@ class ShopRegister extends Component {
       ClosingTime: this.state.ClosingTime,
       price: this.state.price,
       image: this.state.image,
-      Latitude: this.state.Latitude,
-      Longitude: this.state.Longitude,
+      lat: this.state.lat,
+      lng: this.state.lng,
       role: this.state.role,
       address: this.state.address,
     }
 
     Shopregister(newUser).then(res => {
-      this.props.history.push(`/signin`)
+      this.props.history.push(`https://laundrybackend.herokuapp.com/signin`)
     })
    };
     handleChange = e => {
@@ -143,14 +128,26 @@ class ShopRegister extends Component {
 
     this.setState({ formErrors, [name]: value }, () => console.log(this.state));
   };
-  state = { selectedFile: null }
+  //state = { selectedFile: null }
 
-  fileChangedHandler = event => {
+  /*fileChangedHandler = event => {
   this.setState({ selectedFile: event.target.files[0] })
+  }*/
+  onClickHandler = (e) => {
+    e.preventDefault();
+    const data = new FormData()
+    data.append("image", this.state.image)
+    axios.post("https://laundrybackend.herokuapp.com/uploads/", data,{
+    }).then(res => {
+      console.log(res.statusText)
+    })
   }
 
-  uploadHandler = () => {
-   console.log(this.state.selectedFile)
+  onChangHandler = event => {
+   this.setState({
+    image:event.target.files[0],
+    loaded: 0,
+  })
   }
   render() {
     const { formErrors } = this.state;
@@ -159,7 +156,7 @@ class ShopRegister extends Component {
       <div className="container">
         <div className="row">
           <div className="col-md-6 mt-5 mx-auto">
-            <form noValidate onSubmit={this.handleSubmit} enctype="multipart/form-data">
+            <form noValidate onSubmit={this.handleSubmit} encType="multipart/form-data">
               <h1 className="h3 mb-3 font-weight-normal" className="font-weight-bold text-primary">Own a Laundry shop? register here</h1>
               <div className="form-group">
                 <label htmlFor="name" className="font-weight-bold text-danger">Name</label>
@@ -209,7 +206,7 @@ class ShopRegister extends Component {
                   onChange={this.handleChange}
                 />
                 <div style={{ fontSize: 20, color: "red" }}>
-            {this.state.phoneNumberError}
+                 {this.state.phoneNumberError}
                 {formErrors.phoneNumberError.length > 0 && (
                 <span className="errorMessage">{formErrors.phoneNumberError}</span>
                 )}
@@ -262,8 +259,6 @@ class ShopRegister extends Component {
                   placeholder="ClosingTime"
                   value={this.state.ClosingTime}
                   onChange={this.handleChange}
-                   /*onChange={ changeHandler('ClosingTime') }
-                  onBlur={ validateHandler('ClosingTime') } */
                 />
                 <div style={{ fontSize: 20, color: "red" }}>
             {this.state.ClosingTimeError}
@@ -287,23 +282,20 @@ class ShopRegister extends Component {
                 <label htmlFor="image" className="font-weight-bold text-danger">Image</label>
                 <input
                   type="file"
-                  className="form-control"
                   name="image"
-                  value={this.state.image}
-                  onChange={this.fileChangedHandler} />
-                  <button onClick={this.uploadHandler}>Upload!</button> 
+                  //value={this.state.image}
+                  onChange={this.onChangHandler} /> 
+                  <button type="button" className="btn btn-success btn-block" onClick={this.onClickHandler}>Upload</button>
               </div>
               <div className="form-group">
                 <label htmlFor="Latitude" className="font-weight-bold text-danger">Latitude</label>
                 <input
                   type="number"
                   className="form-control"
-                  name="Latitude"
+                  name="lat"
                   placeholder="Latitude"
-                  value={this.state.Latitude}
+                  value={this.state.lat}
                   onChange={this.handleChange}
-                   /*onChange={ changeHandler('geometry') }
-                  onBlur={ validateHandler('geometry') } */
                 />
               </div>
                   <div className="form-group">
@@ -311,12 +303,10 @@ class ShopRegister extends Component {
                 <input
                   type="number"
                   className="form-control"
-                  name="Longitude"
+                  name="lng"
                   placeholder="Longitude"
-                  value={this.state.Longitude}
+                  value={this.state.lng}
                   onChange={this.handleChange}
-                   /*onChange={ changeHandler('geometry') }
-                  onBlur={ validateHandler('geometry') } */
                 />
               </div>
               <div className="form-group">
@@ -328,8 +318,6 @@ class ShopRegister extends Component {
                   placeholder="role"
                   value={this.state.role}
                   onChange={this.handleChange}
-                   /*onChange={ changeHandler('role') }
-                  onBlur={ validateHandler('role') }*/
                 />
               </div>
               <div className="form-group">
@@ -341,8 +329,6 @@ class ShopRegister extends Component {
                   placeholder="address"
                   value={this.state.address}
                   onChange={this.handleChange}
-                   /*onChange={ changeHandler('address') }
-                  onBlur={ validateHandler('address') } */
                 />
               </div>
               <button

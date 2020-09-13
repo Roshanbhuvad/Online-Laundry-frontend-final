@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Shoplogin } from './ShopFunction'
-import { AuthConsumer } from "../authContext";
+//import { AuthConsumer } from "../authContext";
 
 class ShopLogin extends Component {
   constructor() {
@@ -28,7 +28,7 @@ class ShopLogin extends Component {
 
    Shoplogin(user).then(res => {
       if (res) {
-        this.props.history.push(`/shops/myorder`)
+        this.props.history.push(`https://laundrybackend.herokuapp.com/shops/myorder`)
       }
     })
   }
@@ -38,16 +38,16 @@ class ShopLogin extends Component {
     });
   };
 
-  handleSubmit = event => {
+  /*handleSubmit = event => {
     console.log("Submitting");
     console.log(this.state);
-  };
+  }; */
 
 
   render() {
     return (
        <div className="col-md-6 mt-5 mx-auto">
-     <form noValidate onSubmit={this.handleSubmit}>
+     <form noValidate onSubmit={this.onSubmit}>
               <h1 className="h3 mb-3 font-weight-normal" className="font-weight-bold text-primary">Sign in as a ShopOwner</h1>
                 <div className="form-group">
                   <label htmlFor="phoneNumber" className="font-weight-bold text-danger">Mobile Number</label>
